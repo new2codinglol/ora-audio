@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-public), system-ui, sans-serif;
+
+  --color-pitch: #08070a;
+  --color-coal: #0f0d11;
+  --color-bone: #f3e6c8;
+  --color-brass: #c2a35c;
+  --color-ash: #8d8579;
+}
+
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+body {
+  background: var(--color-pitch);
+  color: var(--color-bone);
+  min-height: 100dvh;
+}
+
+::selection { background: var(--color-brass); color: var(--color-pitch); }
+
+/* Chiaroscuro: one warm source, everything else falls off to black. The
+   inset vignette is what stops a dark page reading as a flat dark page. */
+.lit {
+  position: relative;
+  background:
+    radial-gradient(120% 90% at 28% 12%, rgba(107, 90, 58, 0.55), transparent 62%),
+    var(--color-pitch);
+}
+.lit::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 120px 20px rgba(0, 0, 0, 0.9);
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(90% 70% at 50% 40%, transparent 35%, rgba(4, 3, 5, 0.85) 100%);
+}
+
+.hair { border-color: rgba(194, 163, 92, 0.28); }
+
+.btn {
+  transition: transform 160ms var(--ease-out), background-color 200ms var(--ease-out),
+    color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+.btn:active { transform: scale(0.97); }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-solid:hover { background: var(--color-bone); }
+  .btn-ghost:hover { border-color: var(--color-brass); color: var(--color-brass); }
+}
+
+/* Slow breathing highlight on the hero. 14s and barely visible — it is
+   there so a still photograph does not read as a dead page. */
+@keyframes breathe {
+  0%, 100% { opacity: 0.42; transform: translate3d(0, 0, 0) scale(1); }
+  50%      { opacity: 0.62; transform: translate3d(0, -14px, 0) scale(1.06); }
+}
+.breathe { animation: breathe 14s var(--ease-in-out) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .breathe { animation: none; }
+  *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}
