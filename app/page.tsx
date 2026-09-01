@@ -119,6 +119,17 @@ export default function Home() {
             }}
             aria-hidden
           />
+          {/* Directional scrim. The photograph is warm and bright on the right,
+              and the copy sits bottom-left — without this the eyebrow loses to
+              the wood grain behind it. */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(100deg, rgba(4,3,5,.92) 0%, rgba(4,3,5,.72) 34%, rgba(4,3,5,.15) 62%, transparent 82%), linear-gradient(0deg, rgba(4,3,5,.9) 0%, transparent 48%)",
+            }}
+          />
         </div>
 
         <div className="absolute inset-x-0 bottom-0">
