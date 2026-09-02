@@ -134,8 +134,8 @@ export default function Home() {
 
         <div className="absolute inset-x-0 bottom-0">
           <div className="mx-auto max-w-6xl px-6 pb-14">
-            <p className="text-xs uppercase tracking-[0.3em] text-brass">One model · made to order</p>
-            <h1 className="mt-5 max-w-3xl font-display text-[3.2rem] leading-[0.95] tracking-[-0.02em] sm:text-7xl">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brass">01 · one model, made to order</p>
+            <h1 className="mt-5 max-w-3xl font-display text-[3.2rem] font-normal leading-[0.95] tracking-[-0.025em] sm:text-7xl">
               One speaker,
               <br />
               made properly.
@@ -167,10 +167,10 @@ export default function Home() {
 
       {/* -------------------------------------------------------- detail */}
       <section id="detail" className="lit">
-        <div className="relative z-10 mx-auto max-w-6xl px-6 py-24">
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-28 sm:py-40">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.24em] text-brass">Three parts of it</p>
-            <h2 className="mt-4 max-w-xl font-display text-4xl leading-tight sm:text-5xl">
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">02 · three parts of it</p>
+            <h2 className="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Everything expensive about it is inside.
             </h2>
           </Reveal>
@@ -183,9 +183,12 @@ export default function Home() {
 
       {/* -------------------------------------------------------- making */}
       <section id="making" className="border-t hair bg-coal">
-        <div className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mx-auto max-w-6xl px-6 py-28 sm:py-40">
           <Reveal>
-            <h2 className="max-w-xl font-display text-4xl leading-tight sm:text-5xl">
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">
+              03 · how it is made
+            </p>
+            <h2 className="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Sixty pairs a month, and that is the ceiling.
             </h2>
           </Reveal>
@@ -194,7 +197,7 @@ export default function Home() {
             {MAKING.map((m, i) => (
               <Reveal key={m.n} delay={i * 0.07}>
                 <div className="border-t hair pt-6">
-                  <p className="font-display text-sm text-brass">{m.n}</p>
+                  <p className="font-mono text-[11px] tracking-[0.2em] text-brass">{m.n}</p>
                   <h3 className="mt-3 font-display text-2xl leading-snug">{m.t}</h3>
                   <p className="mt-3 leading-relaxed text-bone/70">{m.b}</p>
                 </div>
@@ -206,9 +209,14 @@ export default function Home() {
 
       {/* --------------------------------------------------------- specs */}
       <section id="specs" className="lit border-t hair">
-        <div className="relative z-10 mx-auto grid max-w-6xl gap-14 px-6 py-24 lg:grid-cols-[.9fr_1.1fr]">
+        <div className="relative z-10 mx-auto grid max-w-6xl gap-14 px-6 py-28 sm:py-40 lg:grid-cols-[.9fr_1.1fr]">
           <Reveal>
-            <h2 className="font-display text-4xl leading-tight sm:text-5xl">Specification</h2>
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">
+              04 · specification
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
+              Specification
+            </h2>
             <p className="mt-4 max-w-sm leading-relaxed text-bone/70">
               The whole sheet. If a number is missing it is because we do not measure it, not
               because it is unflattering.
@@ -233,8 +241,8 @@ export default function Home() {
                     i > 0 ? "border-t hair" : ""
                   }`}
                 >
-                  <dt className="text-xs uppercase tracking-[0.16em] text-brass">{k}</dt>
-                  <dd className="text-bone/80">{v}</dd>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.16em] text-brass">{k}</dt>
+                  <dd className="font-mono text-[13px] leading-relaxed text-bone/80">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -255,7 +263,7 @@ export default function Home() {
         </div>
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-6xl px-6">
-            <h2 className="max-w-lg font-display text-4xl leading-tight sm:text-5xl">
+            <h2 className="max-w-lg font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Ninety days in your own room.
             </h2>
             <p className="mt-4 max-w-md leading-relaxed text-bone/75">

@@ -3,6 +3,7 @@
 @theme {
   --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-public), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
   --color-pitch: #08070a;
   --color-coal: #0f0d11;
@@ -25,19 +26,16 @@ body {
 ::selection { background: var(--color-brass); color: var(--color-pitch); }
 
 /* Chiaroscuro: one warm source, everything else falls off to black. The
-   inset vignette is what stops a dark page reading as a flat dark page. */
+   light stays — it is the whole concept — but the inset black ring that used
+   to sit over it is gone. Both references are explicit that elevation comes
+   from hairline borders and tonal contrast, never from a shadow, and that
+   ring was a shadow doing a section divider's job while muddying every edge
+   it touched. */
 .lit {
   position: relative;
   background:
-    radial-gradient(120% 90% at 28% 12%, rgba(107, 90, 58, 0.55), transparent 62%),
+    radial-gradient(120% 90% at 28% 12%, rgba(107, 90, 58, 0.5), transparent 62%),
     var(--color-pitch);
-}
-.lit::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 120px 20px rgba(0, 0, 0, 0.9);
 }
 
 .vignette::after {

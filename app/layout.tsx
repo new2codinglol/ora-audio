@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Public_Sans } from "next/font/google";
+import { Fraunces, IBM_Plex_Mono, Public_Sans } from "next/font/google";
 import "./globals.css";
 
 const display = Fraunces({
@@ -14,6 +14,12 @@ const body = Public_Sans({
   weight: ["300", "400", "500", "600"],
 });
 
+const mono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-plex-mono",
+  weight: ["400", "500"],
+});
+
 export const metadata: Metadata = {
   title: "Ora — one speaker, made properly",
   description:
@@ -24,7 +30,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
