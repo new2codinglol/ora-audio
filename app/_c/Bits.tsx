@@ -25,9 +25,9 @@ export function Reveal({
     <motion.div
       ref={ref}
       className={className}
-      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 12 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.62, ease: EASE_OUT, delay }}
+      transition={{ duration: 0.55, ease: EASE_OUT, delay }}
     >
       {children}
     </motion.div>
@@ -35,8 +35,8 @@ export function Reveal({
 }
 
 /* --------------------------------------------------------------------- */
-/* Fixed nav, four items, transparent. The active item takes a dashed       */
-/* underline rather than a colour, because the accent is editorial only.    */
+/* Fixed nav. Four items, transparent, and the active one takes brass —     */
+/* the accent is a state here rather than an editorial flourish.            */
 
 export function Nav({ items }: { items: [string, string][] }) {
   const [active, setActive] = useState(items[0][1]);
@@ -61,36 +61,38 @@ export function Nav({ items }: { items: [string, string][] }) {
   }, [items]);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6">
-      <a href="#top" className="lab capt">
-        Ora
-      </a>
-      {/* Four items do not fit beside the wordmark at 390px — they wrapped
-          onto a second line and collided with it. Below sm the nav is the
-          wordmark and one action, which is the same restraint the brief asks
-          for at full width. */}
-      <ul className="hidden gap-6 sm:flex">
-        {items.map(([label, href]) => (
-          <li key={href}>
-            <a href={href} className={`lab capt pb-1 ${active === href ? "nav-on" : ""}`}>
-              {label}
-            </a>
-          </li>
-        ))}
-      </ul>
-      <a href="#order" className="lab capt sm:hidden">
-        Order
-      </a>
+    <nav className="fixed inset-x-0 top-0 z-50">
+      <div className="wrap flex items-center gap-6 py-6">
+        <a href="#top" className="h3">
+          Ora
+        </a>
+        {/* Four items do not fit beside the wordmark on a phone; below sm the
+            nav is the wordmark and one action. */}
+        <ul className="ml-auto hidden gap-7 sm:flex">
+          {items.map(([label, href]) => (
+            <li key={href}>
+              <a
+                href={href}
+                className={`text-[14px] transition-colors duration-200 ${
+                  active === href ? "text-brass" : "text-dim"
+                }`}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a href="#order" className="btn btn-ghost ml-auto px-5 py-2 text-[13px] sm:ml-0">
+          Order
+        </a>
+      </div>
     </nav>
   );
 }
 
 /* --------------------------------------------------------------------- */
-/* The detail viewer — Ora's one working artefact. Kept, and moved into the */
-/* ORYZO vocabulary: ghost buttons that invert when selected, full-bleed    */
-/* sharp-edged photography, and the description in the 29px mixed-case      */
-/* voice. The crossfade carries a 3px blur; without it you see two          */
-/* photographs overlapping rather than one view becoming another.           */
+/* The detail viewer. Sentence case, because this is somebody describing    */
+/* the thing they made rather than a label beside it in a vitrine.          */
 
 export type Detail = {
   id: string;
@@ -107,8 +109,8 @@ export function DetailViewer({ details }: { details: Detail[] }) {
   const active = details.find((d) => d.id === id) ?? details[0];
 
   return (
-    <div className="grid gap-[18px] lg:grid-cols-[1fr_1fr] lg:items-center">
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+    <div className="grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:items-center">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-[3px]">
         {details.map((d) => {
           const on = d.id === active.id;
           return (
@@ -118,7 +120,7 @@ export function DetailViewer({ details }: { details: Detail[] }) {
               alt={on ? d.alt : ""}
               aria-hidden={!on}
               fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
+              sizes="(min-width: 1024px) 55vw, 100vw"
               className="object-cover transition-[opacity,filter,transform] duration-[320ms]"
               style={{
                 opacity: on ? 1 : 0,
@@ -132,7 +134,7 @@ export function DetailViewer({ details }: { details: Detail[] }) {
       </div>
 
       <div>
-        <div role="tablist" aria-label="Details" className="flex flex-wrap gap-[10px]">
+        <div role="tablist" aria-label="Details" className="flex flex-wrap gap-2">
           {details.map((d) => {
             const on = d.id === active.id;
             return (
@@ -141,8 +143,8 @@ export function DetailViewer({ details }: { details: Detail[] }) {
                 role="tab"
                 aria-selected={on}
                 onClick={() => setId(d.id)}
-                className={`btn-ghost r-ghost lab capt ${
-                  on ? "bg-cream text-walnut" : ""
+                className={`btn px-4 py-2 text-[13px] ${
+                  on ? "btn-solid" : "btn-ghost"
                 }`}
               >
                 {d.tab}
@@ -157,9 +159,9 @@ export function DetailViewer({ details }: { details: Detail[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.22, ease: EASE_OUT }}
         >
-          <h3 className="lab headline mt-[41px]">{active.title}</h3>
-          <p className="body-voice mt-[24px] max-w-[24ch]">{active.body}</p>
-          <p className="lab capt divider mt-[24px] max-w-[46ch] pt-[14px] text-driftwood">
+          <h3 className="h2 mt-8">{active.title}</h3>
+          <p className="lead mt-5 max-w-[46ch] text-cream/80">{active.body}</p>
+          <p className="hair mt-7 max-w-[52ch] pt-4 text-[13.5px] leading-relaxed text-dim">
             {active.spec}
           </p>
         </motion.div>

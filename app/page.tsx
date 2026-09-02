@@ -6,15 +6,12 @@ const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=76&auto=format&fit=crop`;
 
 const PHOTO = {
-  cabinet: "1651197227613-c5a1b6340219",
   cone: "1597183739841-5ca26ab0a604",
   port: "1575169813404-1659ec864f1a",
-  room: "1593906106036-9fa76d556af3",
 };
 
 const NAV: [string, string][] = [
-  ["The speaker", "#speaker"],
-  ["Detail", "#detail"],
+  ["The speaker", "#detail"],
   ["How it is made", "#made"],
   ["Specification", "#spec"],
 ];
@@ -37,15 +34,6 @@ const DETAILS: Detail[] = [
     alt: "A flared bass port cut into a solid timber cabinet panel",
     body: "A flared rear port, tuned to 42 Hz and finished on the same lathe that cuts the driver seat. Machine-flared ports chuff on anything with a sustained low note. This one does not, and you can hear where the money went.",
     spec: "Rear-firing, 62 mm throat, 42 Hz tuning · keep 20 cm from the wall",
-  },
-  {
-    id: "room",
-    tab: "In the room",
-    title: "Loud enough for one room, honestly",
-    photo: U(PHOTO.room, 1100),
-    alt: "The speaker standing in a dark room lit by a single shaft of daylight",
-    body: "Ora is a 30 square metre speaker. It will fill a living room, a studio, or a shop floor at half volume, and it will not pretend to fill a hall. There is no larger model to sell you, so we have no reason to undersell this one.",
-    spec: "60 W continuous per channel · 48 Hz – 22 kHz ±3 dB · 86 dB sensitivity",
   },
 ];
 
@@ -84,140 +72,113 @@ export default function Home() {
     <div>
       <Nav items={NAV} />
 
-      {/* A product serial number translated to UI, down the right margin. */}
+      {/* A serial number on a made object, down the right margin. */}
       <span
-        className="edge-label lab micro fixed right-[10px] top-1/2 z-40 hidden -translate-y-1/2 text-driftwood lg:block"
+        className="edge-label lab fixed right-3 top-1/2 z-40 hidden -translate-y-1/2 text-dim lg:block"
         aria-hidden
       >
-        Ora 1-model — Bristol
+        Ora · one model · Bristol
       </span>
 
       {/* ---------------------------------------------------------- hero */}
-      {/* Full-viewport photograph, the object in context. Everything else
-          floats on it: the lockup upper-left, the info card lower-left, the
-          thumbnail lower-right. */}
-      <section id="top" className="relative h-screen w-full overflow-hidden">
-        <Image
-          src={U(PHOTO.room, 2000)}
-          alt="An Ora speaker standing in a dark room lit by a single shaft of daylight"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-walnut/55" aria-hidden />
-
-        <div className="relative flex h-full flex-col justify-between px-6 pb-6 pt-[104px]">
-          <div>
-            <p className="lab capt text-cream/80">Solid walnut · two drivers · one amplifier</p>
-            <h1 className="lab display mt-[10px]">Ora</h1>
-          </div>
-
-          <div className="flex flex-wrap items-end justify-between gap-[18px]">
-            {/* the semi-transparent attribution card */}
-            <div className="r-card max-w-[46ch] bg-walnut/70 p-[24px] backdrop-blur-[2px]">
-              <p className="lab capt">
-                Designed and made in Bristol. Sixty pairs a month, and that is the ceiling.
-              </p>
-              <div className="divider my-[14px]" />
-              <p className="body-voice">
-                One speaker, made properly. There is no second model, no subscription and no app
-                that expires.
-              </p>
-            </div>
-
-            {/* the lower-right card. In the reference this is a video
-                thumbnail; there is no video, so it does the same job for
-                something that exists — it opens the detail viewer. */}
-            <a href="#detail" className="r-card group flex items-center gap-[14px] bg-walnut/70 p-[12px] backdrop-blur-[2px]">
-              <span className="relative block h-[54px] w-[72px] overflow-hidden">
-                <Image src={U(PHOTO.cone, 240)} alt="" fill sizes="72px" className="object-cover" />
-              </span>
-              <span className="lab capt pr-[10px]">
-                Look closer
-                <br />
-                <span className="text-driftwood">Three parts of it</span>
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ------------------------------------------------------- speaker */}
-      {/* Void mode: the object centred on the canvas, heading left, body
-          right, 18px gutters. Both text columns stay left-aligned. */}
-      <section id="speaker" className="screen divider w-full px-6 py-[68px]">
-        <div className="grid items-center gap-[18px] lg:grid-cols-[1fr_1.1fr_1fr]">
-          <Reveal>
-            <h2 className="lab headline">Everything expensive about it is inside.</h2>
-          </Reveal>
-
-          <div className="relative h-[46vh] min-h-[320px] w-full lg:h-[72vh]">
-            <Cabinet />
-          </div>
-
-          <Reveal delay={0.08}>
-            <p className="body-voice">
-              Two drivers, one amplifier, and a rear port cut by hand into solid nineteen
-              millimetre walnut. Turn the page and the cabinet turns with you.
+      {/* The hero is the cabinet itself rather than a photograph. Every stock
+          shot to hand is a different speaker — the last one was a fabric
+          cylinder on a page describing a mitred walnut box — and a page whose
+          whole argument is candour cannot open on the wrong object. */}
+      <section id="top" className="grain relative overflow-hidden">
+        <div className="wrap grid items-center gap-12 pb-24 pt-32 lg:grid-cols-[1fr_1.05fr] lg:pb-28 lg:pt-40">
+          <div className="relative z-10">
+            <p className="lab text-dim">Solid walnut · two drivers · one amplifier</p>
+            <h1 className="display mt-6 max-w-[13ch]">One speaker, made properly.</h1>
+            <p className="lead mt-7 max-w-[42ch] text-cream/80">
+              Cut from one board per pair in a workshop in Bristol. There is no second model, no
+              subscription, and no app that expires.
             </p>
-            <p className="lab capt mt-[24px] text-driftwood">Scroll to turn it</p>
-          </Reveal>
+            <div className="mt-9 flex flex-wrap items-center gap-5">
+              <a href="#order" className="btn btn-solid px-7 py-3.5 text-[15px]">
+                Order a pair — £1,180
+              </a>
+              <a href="#detail" className="btn btn-ghost px-7 py-3.5 text-[15px]">
+                Look closer
+              </a>
+            </div>
+            <p className="mt-7 text-[13.5px] text-dim">
+              Six week lead time · free return for ninety days · sixty pairs a month
+            </p>
+          </div>
+
+          <div className="relative h-[380px] w-full sm:h-[540px]">
+            <Cabinet />
+            <p className="lab absolute inset-x-0 bottom-0 text-center text-dim">
+              Scroll to turn it
+            </p>
+          </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------- detail */}
-      <section id="detail" className="screen divider w-full px-6 py-[68px]">
-        <Reveal className="mb-[41px]">
-          <p className="lab capt text-driftwood">02 — Three parts of it</p>
-          <h2 className="lab headline mt-[14px]">Isn&rsquo;t just a box with a cone in it.</h2>
-        </Reveal>
-        <DetailViewer details={DETAILS} />
+      <section id="detail" className="hair screen">
+        <div className="wrap py-24">
+          <Reveal className="mb-14">
+            <p className="lab text-dim">Two parts of it</p>
+            <h2 className="h2 mt-5 max-w-[20ch]">Everything expensive about it is inside.</h2>
+          </Reveal>
+          <DetailViewer details={DETAILS} />
+        </div>
       </section>
 
       {/* ---------------------------------------------------------- made */}
-      <section id="made" className="screen divider w-full px-6 py-[68px]">
-        <Reveal className="mb-[41px]">
-          <p className="lab capt text-driftwood">03 — How it is made</p>
-          <h2 className="lab headline mt-[14px]">Sixty pairs a month, and that is the ceiling.</h2>
-        </Reveal>
+      <section id="made" className="hair screen">
+        <div className="wrap py-24">
+          <Reveal className="mb-14">
+            <p className="lab text-dim">How it is made</p>
+            <h2 className="h2 mt-5 max-w-[22ch]">
+              Sixty pairs a month, and that is the ceiling.
+            </h2>
+          </Reveal>
 
-        <div className="grid gap-[41px] md:grid-cols-3">
-          {MAKING.map((m, i) => (
-            <Reveal key={m.n} delay={i * 0.08}>
-              <div className="divider pt-[18px]">
-                <p className="lab capt text-driftwood">{m.n}</p>
-                <h3 className="lab sub mt-[14px]">{m.t}</h3>
-                <p className="body-voice mt-[18px] text-[18px] leading-[1.26]">{m.b}</p>
-              </div>
-            </Reveal>
-          ))}
+          <div className="grid gap-12 md:grid-cols-3">
+            {MAKING.map((m, i) => (
+              <Reveal key={m.n} delay={i * 0.07}>
+                <div className="hair pt-6">
+                  <p className="lab text-dim">{m.n}</p>
+                  <h3 className="h3 mt-4">{m.t}</h3>
+                  <p className="mt-4 text-[15px] leading-relaxed text-cream/75">{m.b}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ---------------------------------------------------------- spec */}
-      <section id="spec" className="screen divider w-full px-6 py-[68px]">
-        <div className="grid gap-[41px] lg:grid-cols-[1fr_1.3fr]">
+      <section id="spec" className="hair screen">
+        <div className="wrap grid gap-14 py-24 lg:grid-cols-[.85fr_1.15fr]">
           <Reveal>
-            <p className="lab capt text-driftwood">04 — Specification</p>
-            <h2 className="lab headline mt-[14px]">The whole sheet.</h2>
-            <p className="body-voice mt-[24px] max-w-[22ch]">
-              If a number is missing it is because we do not measure it, not because it is
+            <p className="lab text-dim">Specification</p>
+            <h2 className="h2 mt-5">The whole sheet.</h2>
+            <p className="lead mt-6 max-w-[30ch] text-cream/75">
+              Ora is a thirty square metre speaker. It will fill a living room, a studio, or a
+              shop floor at half volume, and it will not pretend to fill a hall — there is no
+              larger model to sell you, so there is no reason to undersell this one.
+            </p>
+            <p className="mt-5 max-w-[30ch] text-[13.5px] text-dim">
+              If a number below is missing it is because we do not measure it, not because it is
               unflattering.
             </p>
           </Reveal>
 
-          <Reveal delay={0.08}>
+          <Reveal delay={0.07}>
             <dl>
               {SPECS.map(([k, v], i) => (
                 <div
                   key={k}
-                  className={`grid grid-cols-[10rem_1fr] gap-[18px] py-[14px] ${
-                    i > 0 ? "divider" : ""
+                  className={`grid grid-cols-[9rem_1fr] gap-6 py-4 sm:grid-cols-[11rem_1fr] ${
+                    i > 0 ? "hair" : ""
                   }`}
                 >
-                  <dt className="lab capt text-driftwood">{k}</dt>
-                  <dd className="lab capt">{v}</dd>
+                  <dt className="lab pt-1 text-dim">{k}</dt>
+                  <dd className="text-[15px] leading-relaxed">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -226,46 +187,48 @@ export default function Home() {
       </section>
 
       {/* --------------------------------------------------------- order */}
-      <section id="order" className="screen divider w-full px-6 py-[68px]">
-        <Reveal>
-          <p className="lab capt text-driftwood">05 — Ninety days</p>
-          <h2 className="lab display mt-[14px] max-w-[16ch]">
-            A showroom tells you what a speaker sounds like in a showroom.
-          </h2>
-          <p className="body-voice mt-[24px] max-w-[26ch]">
-            Take it home. If it is wrong we pay the courier both ways.
-          </p>
-
-          {/* the one filled surface on the page */}
-          <div className="mt-[41px] flex flex-wrap items-center gap-[18px]">
-            <a href="#order" className="btn-fill r-pill lab capt inline-block">
-              Order a pair — £1,180
-            </a>
-            <span className="lab capt text-driftwood">
-              Six week lead time · shipped from Bristol
-            </span>
-          </div>
-        </Reveal>
+      <section id="order" className="hair screen">
+        <div className="wrap py-24">
+          <Reveal>
+            <p className="lab text-dim">Ninety days</p>
+            <h2 className="h2 mt-5 max-w-[20ch]">
+              A showroom tells you what a speaker sounds like in a showroom.
+            </h2>
+            <p className="lead mt-6 max-w-[38ch] text-cream/80">
+              Take it home. If it is wrong we pay the courier both ways.
+            </p>
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              <a href="#order" className="btn btn-solid px-8 py-4 text-[15px]">
+                Order a pair — £1,180
+              </a>
+              <span className="text-[13.5px] text-dim">
+                Six week lead time · shipped from Bristol
+              </span>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* -------------------------------------------------------- footer */}
-      <footer className="divider w-full px-6 py-[41px]">
-        <div className="flex flex-wrap items-end justify-between gap-[24px]">
-          <p className="lab display">Ora</p>
-          <div className="max-w-[52ch]">
-            {/* Ember: credit lines and the source link only, never a control. */}
-            <p className="lab capt text-ember">
-              Built by Jason Low ·{" "}
-              <a href="https://github.com/new2codinglol/ora-audio" className="link">
-                Read the source
-              </a>
-            </p>
-            <p className="lab capt mt-[10px] text-driftwood">
+      <footer className="hair">
+        <div className="wrap flex flex-wrap items-end justify-between gap-8 py-14">
+          <p className="display">Ora</p>
+          <div className="max-w-[54ch]">
+            <p className="text-[13.5px] leading-relaxed text-dim">
               Ora is a fictional brand. The speaker, the workshop and the price are invented, and
-              nothing here is for sale.
+              nothing here is for sale. This page is a design-engineering portfolio piece by Jason
+              Low —{" "}
+              <a
+                href="https://github.com/new2codinglol/ora-audio"
+                className="text-brass underline underline-offset-[3px]"
+              >
+                read the source
+              </a>
+              .
             </p>
-            <p className="legal mt-[14px] text-driftwood">
-              * Photography from Unsplash — Alexey Demidov, Scott Major, Max Anderson, Michael C.
+            <p className="mt-4 text-[12px] leading-relaxed text-dim/70">
+              Detail photography from Unsplash: Alexey Demidov, Scott Major, Max Anderson,
+              Michael C. The cabinet is modelled, not photographed.
             </p>
           </div>
         </div>
