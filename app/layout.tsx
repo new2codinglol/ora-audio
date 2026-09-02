@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
-import { Figtree } from "next/font/google";
+import { Fraunces, Public_Sans } from "next/font/google";
 import "./globals.css";
 
-/* ORYZO uses Halyard Display Variable and nothing else. The brief's own
-   substitute list is Inter / Söhne / Neue Haas — all neo-grotesques, where
-   Halyard is geometric with a tall x-height. Figtree is the closer free
-   match on that axis, and one family is the point: there is no second face
-   anywhere on this page except Arial at 8px for the legal line, which the
-   brief specifies precisely because it should not look designed. */
-const sans = Figtree({
+/* Fraunces and Public Sans, which is where this page started before two
+   restyles took it elsewhere. The pairing was right for the subject the whole
+   time: a soft, slightly wonky old-style serif reads as something made by a
+   person, and the product is sold on being cut from one board per pair by
+   somebody in Bristol. A geometric uppercase system said museum instead. */
+const display = Fraunces({
   subsets: ["latin"],
-  variable: "--font-figtree",
-  weight: ["400", "500"],
+  variable: "--font-fraunces",
+  weight: "variable",
+  axes: ["SOFT", "WONK"],
+});
+
+const body = Public_Sans({
+  subsets: ["latin"],
+  variable: "--font-public",
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -24,7 +30,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={sans.variable}>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
