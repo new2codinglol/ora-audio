@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --font-display: var(--font-fraunces), Georgia, "Times New Roman", serif;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
   --font-sans: var(--font-public), system-ui, sans-serif;
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 
-  --color-pitch: #08070a;
-  --color-coal: #0f0d11;
-  --color-bone: #f3e6c8;
-  --color-brass: #c2a35c;
+  /* Japandi, from the deck. Light woods, beige and grey, one clay accent.
+     Every value that used to be chiaroscuro is now a material. */
+  --color-linen: #e7e1d6;
+  --color-rice: #f4f1ea;
+  --color-sumi: #4a453d;
+  --color-clay: #8c7358;
   --color-ash: #8d8579;
+  --color-edge: #cfc7b8;
 }
 
 :root {
@@ -18,61 +21,52 @@
 }
 
 body {
-  background: var(--color-pitch);
-  color: var(--color-bone);
+  background: var(--color-linen);
+  color: var(--color-sumi);
   min-height: 100dvh;
 }
 
-::selection { background: var(--color-brass); color: var(--color-pitch); }
+::selection { background: var(--color-clay); color: var(--color-rice); }
 
-/* Chiaroscuro: one warm source, everything else falls off to black. The
-   light stays — it is the whole concept — but the inset black ring that used
-   to sit over it is gone. Both references are explicit that elevation comes
-   from hairline borders and tonal contrast, never from a shadow, and that
-   ring was a shadow doing a section divider's job while muddying every edge
-   it touched. */
-.lit {
-  position: relative;
-  background:
-    radial-gradient(120% 90% at 28% 12%, rgba(107, 90, 58, 0.5), transparent 62%),
-    var(--color-pitch);
+/* Japandi elevation is a change of material, not a change of light: a paper
+   panel on a linen ground, separated by a single hairline. No shadows. */
+.panel {
+  background: var(--color-rice);
+  border: 1px solid var(--color-edge);
+  border-radius: 2px;
 }
 
-.vignette::after {
+.hair { border-color: var(--color-edge); }
+
+/* A quiet paper grain. Japandi is a material style and a flat hex reads as
+   screen rather than surface. */
+.grain::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(90% 70% at 50% 40%, transparent 35%, rgba(4, 3, 5, 0.85) 100%);
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
 }
 
-.hair { border-color: rgba(194, 163, 92, 0.28); }
-
 .btn {
+  border-radius: 2px;
   transition: transform 160ms var(--ease-out), background-color 200ms var(--ease-out),
     color 200ms var(--ease-out), border-color 200ms var(--ease-out);
 }
-.btn:active { transform: scale(0.97); }
+.btn:active { transform: scale(0.98); }
 a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--color-brass);
+  outline: 2px solid var(--color-clay);
   outline-offset: 4px;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .btn-solid:hover { background: var(--color-bone); }
-  .btn-ghost:hover { border-color: var(--color-brass); color: var(--color-brass); }
+  .btn-solid:hover { background: #6f5a44; }
+  .btn-ghost:hover { border-color: var(--color-clay); color: var(--color-clay); }
 }
-
-/* Slow breathing highlight on the hero. 14s and barely visible — it is
-   there so a still photograph does not read as a dead page. */
-@keyframes breathe {
-  0%, 100% { opacity: 0.42; transform: translate3d(0, 0, 0) scale(1); }
-  50%      { opacity: 0.62; transform: translate3d(0, -14px, 0) scale(1.06); }
-}
-.breathe { animation: breathe 14s var(--ease-in-out) infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .breathe { animation: none; }
   *, *::before, *::after {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;

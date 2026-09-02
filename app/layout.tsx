@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono, Public_Sans } from "next/font/google";
+import { IBM_Plex_Mono, Manrope, Public_Sans } from "next/font/google";
 import "./globals.css";
 
-const display = Fraunces({
+const display = Manrope({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  weight: ["400", "600", "700"],
+  variable: "--font-manrope",
+  weight: ["300", "400", "500", "600"],
 });
 
 const body = Public_Sans({

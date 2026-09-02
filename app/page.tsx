@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { DetailViewer, Reveal, type Detail } from "./_c/Bits";
-import { RaysBackdrop } from "./_c/RaysBackdrop";
+import { Cabinet } from "./_c/Cabinet";
+import BlurText from "./_c/reactbits/BlurText";
 
 const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=76&auto=format&fit=crop`;
@@ -81,20 +82,20 @@ export default function Home() {
           <a href="#top" className="font-display text-2xl tracking-tight">
             Ora
           </a>
-          <div className="ml-auto hidden gap-7 text-sm text-bone/70 sm:flex">
-            <a href="#detail" className="transition-colors duration-200 hover:text-brass">
+          <div className="ml-auto hidden gap-7 text-sm text-sumi/70 sm:flex">
+            <a href="#detail" className="transition-colors duration-200 hover:text-clay">
               The speaker
             </a>
-            <a href="#making" className="transition-colors duration-200 hover:text-brass">
+            <a href="#making" className="transition-colors duration-200 hover:text-clay">
               How it is made
             </a>
-            <a href="#specs" className="transition-colors duration-200 hover:text-brass">
+            <a href="#specs" className="transition-colors duration-200 hover:text-clay">
               Specification
             </a>
           </div>
           <a
             href="#buy"
-            className="btn btn-ghost ml-auto border border-brass/40 px-5 py-2.5 text-sm sm:ml-0"
+            className="btn btn-ghost ml-auto border border-edge px-5 py-2.5 text-sm sm:ml-0"
           >
             £1,180
           </a>
@@ -102,75 +103,57 @@ export default function Home() {
       </header>
 
       {/* --------------------------------------------------------- hero */}
-      <section id="top" className="relative">
-        <div className="vignette relative h-[92vh] min-h-[560px] w-full overflow-hidden">
-          <Image
-            src={U(PHOTO.cabinet, 2000)}
-            alt="An Ora speaker in solid walnut, lit from one side against a dark room"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-          />
-          <div
-            className="breathe pointer-events-none absolute -left-[10%] -top-[20%] h-[70%] w-[60%] rounded-full"
-            style={{
-              background: "radial-gradient(circle, rgba(194,163,92,.34), transparent 65%)",
-              filter: "blur(40px)",
-            }}
-            aria-hidden
-          />
-          {/* Directional scrim. The photograph is warm and bright on the right,
-              and the copy sits bottom-left — without this the eyebrow loses to
-              the wood grain behind it. */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(100deg, rgba(4,3,5,.92) 0%, rgba(4,3,5,.72) 34%, rgba(4,3,5,.15) 62%, transparent 82%), linear-gradient(0deg, rgba(4,3,5,.9) 0%, transparent 48%)",
-            }}
-          />
-        </div>
-
-        <div className="absolute inset-x-0 bottom-0">
-          <div className="mx-auto max-w-6xl px-6 pb-14">
-            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-brass">01 · one model, made to order</p>
-            <h1 className="mt-5 max-w-3xl font-display text-[3.2rem] font-normal leading-[0.95] tracking-[-0.025em] sm:text-7xl">
-              One speaker,
-              <br />
-              made properly.
-            </h1>
-            <p className="mt-6 max-w-lg leading-relaxed text-bone/75">
+      {/* Japandi wants the material, not the photograph of it. The cabinet is
+          modelled in react-three-fiber and turns slowly on the linen ground —
+          an object on a table rather than a hero banner. */}
+      <section id="top" className="grain relative overflow-hidden">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-20 pt-32 lg:grid-cols-[1.05fr_.95fr] lg:pb-28 lg:pt-40">
+          <div className="relative z-10">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-clay">
+              01 · one model, made to order
+            </p>
+            <BlurText
+              text="One speaker, made properly."
+              animateBy="words"
+              direction="top"
+              delay={90}
+              stepDuration={0.4}
+              animationFrom={undefined}
+              animationTo={undefined}
+              onAnimationComplete={undefined}
+              className="mt-5 max-w-2xl font-display text-[3rem] font-light leading-[1.02] tracking-[-0.03em] sm:text-[4.4rem]"
+            />
+            <p className="mt-7 max-w-md leading-relaxed text-sumi/75">
               Solid walnut, two drivers, one amplifier, and a rear port cut by hand. There is no
               second model, no subscription and no app that expires.
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <a
                 href="#buy"
-                className="btn btn-solid bg-brass px-7 py-3.5 text-sm font-semibold text-pitch"
+                className="btn btn-solid bg-clay px-7 py-3.5 text-sm font-semibold text-rice"
               >
                 Order a pair — £1,180
               </a>
-              <a
-                href="#detail"
-                className="btn btn-ghost border border-brass/40 px-7 py-3.5 text-sm"
-              >
+              <a href="#detail" className="btn btn-ghost border border-edge px-7 py-3.5 text-sm">
                 Look closer
               </a>
             </div>
-            <p className="mt-5 text-xs text-ash">
+            <p className="mt-6 text-xs text-ash">
               Six week lead time · free return for ninety days · shipped from Bristol
             </p>
+          </div>
+
+          <div className="relative h-[380px] w-full sm:h-[520px]">
+            <Cabinet />
           </div>
         </div>
       </section>
 
       {/* -------------------------------------------------------- detail */}
-      <section id="detail" className="lit">
+      <section id="detail" className="relative">
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-28 sm:py-40">
           <Reveal>
-            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">02 · three parts of it</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-clay">02 · three parts of it</p>
             <h2 className="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Everything expensive about it is inside.
             </h2>
@@ -183,11 +166,10 @@ export default function Home() {
       </section>
 
       {/* -------------------------------------------------------- making */}
-      <section id="making" className="relative overflow-hidden border-t hair bg-coal">
-        <RaysBackdrop />
+      <section id="making" className="relative overflow-hidden border-t hair bg-rice">
         <div className="relative z-10 mx-auto max-w-6xl px-6 py-28 sm:py-40">
           <Reveal>
-            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-clay">
               03 · how it is made
             </p>
             <h2 className="mt-4 max-w-xl font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
@@ -199,9 +181,9 @@ export default function Home() {
             {MAKING.map((m, i) => (
               <Reveal key={m.n} delay={i * 0.07}>
                 <div className="border-t hair pt-6">
-                  <p className="font-mono text-[11px] tracking-[0.2em] text-brass">{m.n}</p>
+                  <p className="font-mono text-[11px] tracking-[0.2em] text-clay">{m.n}</p>
                   <h3 className="mt-3 font-display text-2xl leading-snug">{m.t}</h3>
-                  <p className="mt-3 leading-relaxed text-bone/70">{m.b}</p>
+                  <p className="mt-3 leading-relaxed text-sumi/70">{m.b}</p>
                 </div>
               </Reveal>
             ))}
@@ -210,20 +192,20 @@ export default function Home() {
       </section>
 
       {/* --------------------------------------------------------- specs */}
-      <section id="specs" className="lit border-t hair">
+      <section id="specs" className="relative border-t hair">
         <div className="relative z-10 mx-auto grid max-w-6xl gap-14 px-6 py-28 sm:py-40 lg:grid-cols-[.9fr_1.1fr]">
           <Reveal>
-            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">
+            <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-clay">
               04 · specification
             </p>
             <h2 className="mt-4 font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Specification
             </h2>
-            <p className="mt-4 max-w-sm leading-relaxed text-bone/70">
+            <p className="mt-4 max-w-sm leading-relaxed text-sumi/70">
               The whole sheet. If a number is missing it is because we do not measure it, not
               because it is unflattering.
             </p>
-            <div className="vignette relative mt-10 aspect-[5/4] overflow-hidden">
+            <div className="relative mt-10 aspect-[5/4] overflow-hidden">
               <Image
                 src={U(PHOTO.port, 900)}
                 alt="Detail of the hand-cut rear port in a walnut cabinet"
@@ -243,8 +225,8 @@ export default function Home() {
                     i > 0 ? "border-t hair" : ""
                   }`}
                 >
-                  <dt className="font-mono text-[11px] uppercase tracking-[0.16em] text-brass">{k}</dt>
-                  <dd className="font-mono text-[13px] leading-relaxed text-bone/80">{v}</dd>
+                  <dt className="font-mono text-[11px] uppercase tracking-[0.16em] text-clay">{k}</dt>
+                  <dd className="font-mono text-[13px] leading-relaxed text-sumi/80">{v}</dd>
                 </div>
               ))}
             </dl>
@@ -254,7 +236,7 @@ export default function Home() {
 
       {/* ----------------------------------------------------------- buy */}
       <section id="buy" className="relative border-t hair">
-        <div className="vignette relative h-[420px] overflow-hidden">
+        <div className="relative h-[420px] overflow-hidden">
           <Image
             src={U(PHOTO.room, 1800)}
             alt=""
@@ -268,13 +250,13 @@ export default function Home() {
             <h2 className="max-w-lg font-display text-4xl font-normal leading-tight tracking-[-0.02em] sm:text-5xl">
               Ninety days in your own room.
             </h2>
-            <p className="mt-4 max-w-md leading-relaxed text-bone/75">
+            <p className="mt-4 max-w-md leading-relaxed text-sumi/75">
               A showroom tells you what a speaker sounds like in a showroom. Take it home; if it is
               wrong we pay the courier both ways.
             </p>
             <a
               href="#buy"
-              className="btn btn-solid mt-8 inline-block bg-brass px-8 py-4 text-sm font-semibold text-pitch"
+              className="btn btn-solid mt-8 inline-block bg-clay px-8 py-4 text-sm font-semibold text-rice"
             >
               Order a pair — £1,180
             </a>
@@ -283,7 +265,7 @@ export default function Home() {
       </section>
 
       {/* -------------------------------------------------------- footer */}
-      <footer className="border-t hair bg-coal">
+      <footer className="border-t hair bg-rice">
         <div className="mx-auto max-w-6xl px-6 py-14">
           <p className="font-display text-3xl">Ora</p>
           <div className="mt-10 grid gap-6 border-t hair pt-6 text-xs leading-relaxed text-ash sm:grid-cols-2">
