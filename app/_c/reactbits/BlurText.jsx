@@ -1,10 +1,11 @@
 /* React Bits — TextAnimations/BlurText, copied from
    github.com/DavidHDev/react-bits. Source copied in rather than added as a
-   dependency, per the build rule. Only change from upstream: the 'use
-   client' directive the App Router needs. */
+   dependency, per the build rule. Changes from upstream: the 'use client'
+   directive the App Router needs, and a reduced-motion gate — upstream has
+   none, and on this page the component is the <h1>. */
 'use client';
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { useEffect, useRef, useState, useMemo } from 'react';
 
 const buildKeyframes = (from, steps) => {
@@ -32,6 +33,7 @@ const BlurText = ({
   stepDuration = 0.35
 }) => {
   const elements = animateBy === 'words' ? text.split(' ') : text.split('');
+  const reduceMotion = useReducedMotion();
   const [inView, setInView] = useState(false);
   const ref = useRef(null);
 
@@ -71,6 +73,7 @@ const BlurText = ({
   const fromSnapshot = animationFrom ?? defaultFrom;
   const toSnapshots = animationTo ?? defaultTo;
 
+  const settled = toSnapshots[toSnapshots.length - 1];
   const stepCount = toSnapshots.length + 1;
   const totalDuration = stepDuration * (stepCount - 1);
   const times = Array.from({ length: stepCount }, (_, i) => (stepCount === 1 ? 0 : i / (stepCount - 1)));
@@ -86,14 +89,15 @@ const BlurText = ({
           delay: (index * delay) / 1000
         };
         spanTransition.ease = easing;
+        const transition = reduceMotion ? { duration: 0 } : spanTransition;
 
         return (
           <motion.span
             className="inline-block will-change-[transform,filter,opacity]"
             key={index}
-            initial={fromSnapshot}
-            animate={inView ? animateKeyframes : fromSnapshot}
-            transition={spanTransition}
+            initial={reduceMotion ? settled : fromSnapshot}
+            animate={reduceMotion ? settled : inView ? animateKeyframes : fromSnapshot}
+            transition={transition}
             onAnimationComplete={index === elements.length - 1 ? onAnimationComplete : undefined}
           >
             {segment === ' ' ? '\u00A0' : segment}
