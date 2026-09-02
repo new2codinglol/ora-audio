@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { DetailViewer, Reveal, type Detail } from "./_c/Bits";
+import { RaysBackdrop } from "./_c/RaysBackdrop";
 
 const U = (id: string, w: number) =>
   `https://images.unsplash.com/photo-${id}?w=${w}&q=76&auto=format&fit=crop`;
@@ -182,8 +183,9 @@ export default function Home() {
       </section>
 
       {/* -------------------------------------------------------- making */}
-      <section id="making" className="border-t hair bg-coal">
-        <div className="mx-auto max-w-6xl px-6 py-28 sm:py-40">
+      <section id="making" className="relative overflow-hidden border-t hair bg-coal">
+        <RaysBackdrop />
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-28 sm:py-40">
           <Reveal>
             <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-brass">
               03 · how it is made
