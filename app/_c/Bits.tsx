@@ -65,7 +65,11 @@ export function Nav({ items }: { items: [string, string][] }) {
       <a href="#top" className="lab capt">
         Ora
       </a>
-      <ul className="flex gap-6">
+      {/* Four items do not fit beside the wordmark at 390px — they wrapped
+          onto a second line and collided with it. Below sm the nav is the
+          wordmark and one action, which is the same restraint the brief asks
+          for at full width. */}
+      <ul className="hidden gap-6 sm:flex">
         {items.map(([label, href]) => (
           <li key={href}>
             <a href={href} className={`lab capt pb-1 ${active === href ? "nav-on" : ""}`}>
@@ -74,6 +78,9 @@ export function Nav({ items }: { items: [string, string][] }) {
           </li>
         ))}
       </ul>
+      <a href="#order" className="lab capt sm:hidden">
+        Order
+      </a>
     </nav>
   );
 }
