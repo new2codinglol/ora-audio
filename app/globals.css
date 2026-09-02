@@ -1,72 +1,166 @@
 @import "tailwindcss";
 
-@theme {
-  --font-display: var(--font-manrope), system-ui, sans-serif;
-  --font-sans: var(--font-public), system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+/* ---------------------------------------------------------------------------
+   ORYZO AI, copied from its Refero brief. "Darkroom product editorial: a lone
+   object floating in warm darkness, cream typography the only decoration."
 
-  /* Japandi, from the deck. Light woods, beige and grey, one clay accent.
-     Every value that used to be chiaroscuro is now a material. */
-  --color-linen: #e7e1d6;
-  --color-rice: #f4f1ea;
-  --color-sumi: #4a453d;
-  --color-clay: #8c7358;
-  --color-ash: #8d8579;
-  --color-edge: #cfc7b8;
+   The rules that make it that page rather than a dark page:
+     - two typographic modes only, uppercase/500 for everything and mixed
+       case/400 at 29px for the one descriptive voice
+     - line-height 0.90 at display sizes, letter-spacing normal at every size
+     - no shadows at all; depth is the two-step surface stack
+     - four radii and no others
+     - full-bleed, 100vh per section, dashed hairlines as the only break
+     - the ember accent never touches a button
+--------------------------------------------------------------------------- */
+
+@theme {
+  --font-sans: var(--font-figtree), "Söhne", "Helvetica Neue", Arial, sans-serif;
+
+  --color-walnut: #100904;  /* canvas, warm near-black — never #000 */
+  --color-bark: #382416;    /* the one elevated solid, and the one filled CTA */
+  --color-cork: #40372e;    /* hairlines and dashed dividers */
+  --color-driftwood: #6c5f51;
+  --color-cream: #ffedd7;   /* all text — never #fff */
+  --color-ember: #dc5000;   /* credit lines and the source link. Never a CTA. */
+
+  --text-subheading: 18px;
+  --text-heading-sm: 24px;
+  --text-body: 29px;
+  --text-heading: 41px;
+  --text-display: 51px;
 }
 
 :root {
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
-  background: var(--color-linen);
-  color: var(--color-sumi);
+  background: var(--color-walnut);
+  color: var(--color-cream);
   min-height: 100dvh;
+  font-weight: 500;
+  font-feature-settings: "ss01" on;
+  font-synthesis-weight: none;
 }
 
-::selection { background: var(--color-clay); color: var(--color-rice); }
+::selection { background: var(--color-bark); color: var(--color-cream); }
 
-/* Japandi elevation is a change of material, not a change of light: a paper
-   panel on a linen ground, separated by a single hairline. No shadows. */
-.panel {
-  background: var(--color-rice);
-  border: 1px solid var(--color-edge);
-  border-radius: 2px;
+/* react-three-fiber writes an inline pixel width on the canvas and does not
+   shrink it when the viewport narrows, so a rotate from landscape to portrait
+   leaves the canvas wider than the body and the whole page scrolls sideways.
+   Capping it in CSS costs nothing and survives the resize. */
+canvas { max-width: 100%; }
+
+/* --- the two typographic modes ------------------------------------------ */
+
+/* Mode 1 — the default for everything. Declarative, museum-label.
+   Letter-spacing stays normal: the geometry does the work. */
+.lab {
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: normal;
 }
 
-.hair { border-color: var(--color-edge); }
+/* The signature: 0.9 at display sizes, so uppercase letterforms overlap
+   their line-height bounds and the type stacks as solid form. */
+.display { font-size: clamp(38px, 6.6vw, 51px); line-height: 0.9; }
+.headline { font-size: clamp(30px, 4.6vw, 41px); line-height: 0.9; }
+.sub { font-size: var(--text-subheading); line-height: 1; }
+.capt { font-size: 12px; line-height: 1.2; }
+.micro { font-size: 10px; line-height: 1.2; }
 
-/* A quiet paper grain. Japandi is a material style and a flat hex reads as
-   screen rather than surface. */
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+/* Mode 2 — the exception, and the only mixed-case voice on the page. The
+   weight drop and the case change are the signal that this is description
+   rather than label. */
+.body-voice {
+  font-size: clamp(20px, 2.2vw, 29px);
+  line-height: 1.26;
+  font-weight: 400;
+  text-transform: none;
 }
 
-.btn {
-  border-radius: 2px;
-  transition: transform 160ms var(--ease-out), background-color 200ms var(--ease-out),
-    color 200ms var(--ease-out), border-color 200ms var(--ease-out);
+/* Arial 8px, deliberately not a design choice — this is compliance text and
+   it should not look like anything. */
+.legal {
+  font-family: Arial, system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
-.btn:active { transform: scale(0.98); }
+
+/* --- structure ---------------------------------------------------------- */
+
+/* Full-bleed throughout. Every section owns a viewport. */
+.screen { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; }
+
+/* The only break between sections. Never decorative. */
+.divider { border-top: 1px dashed var(--color-cork); }
+
+/* --- the four radii, and no others -------------------------------------- */
+
+.r-card { border-radius: 12px; }
+.r-pill { border-radius: 36px; }
+.r-ghost { border-radius: 22.5px; }
+.r-round { border-radius: 9999px; }
+
+/* --- controls ----------------------------------------------------------- */
+
+/* The one filled action surface. Its rarity is the signal, so there is never
+   more than one per section. Bark, not ember — the accent is editorial. */
+.btn-fill {
+  background: var(--color-bark);
+  color: var(--color-cream);
+  padding: 14px 24px;
+  transition: background-color 200ms var(--ease-out), transform 160ms var(--ease-out);
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-cream);
+  color: var(--color-cream);
+  padding: 7.5px 18px;
+  transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+.btn-fill:active, .btn-ghost:active { transform: scale(0.97); }
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-fill:hover { background: #4a3020; }
+  .btn-ghost:hover { background: var(--color-cream); color: var(--color-walnut); }
+}
+
+/* Borderless links relying on an underline — the default interaction. */
+.link { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+
 a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--color-clay);
+  outline: 1px solid var(--color-cream);
   outline-offset: 4px;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .btn-solid:hover { background: #6f5a44; }
-  .btn-ghost:hover { border-color: var(--color-clay); color: var(--color-clay); }
+/* Active nav item carries a dashed underline rather than a colour change. */
+.nav-on { border-bottom: 1px dashed var(--color-cork); }
+
+/* --- edge label --------------------------------------------------------- */
+
+/* A product serial number translated to UI: vertical text down the right
+   margin. */
+.edge-label {
+  writing-mode: vertical-rl;
+  letter-spacing: normal;
 }
 
+/* --- reveals ------------------------------------------------------------ */
+
+.rise { opacity: 0; transform: translateY(14px); }
+.rise-in { animation: rise 620ms var(--ease-out) forwards; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise { opacity: 1; transform: none; }
   *, *::before, *::after {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;

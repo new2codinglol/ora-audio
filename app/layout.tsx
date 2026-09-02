@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Manrope, Public_Sans } from "next/font/google";
+import { Figtree } from "next/font/google";
 import "./globals.css";
 
-const display = Manrope({
+/* ORYZO uses Halyard Display Variable and nothing else. The brief's own
+   substitute list is Inter / Söhne / Neue Haas — all neo-grotesques, where
+   Halyard is geometric with a tall x-height. Figtree is the closer free
+   match on that axis, and one family is the point: there is no second face
+   anywhere on this page except Arial at 8px for the legal line, which the
+   brief specifies precisely because it should not look designed. */
+const sans = Figtree({
   subsets: ["latin"],
-  variable: "--font-manrope",
-  weight: ["300", "400", "500", "600"],
-});
-
-const body = Public_Sans({
-  subsets: ["latin"],
-  variable: "--font-public",
-  weight: ["300", "400", "500", "600"],
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  variable: "--font-plex-mono",
+  variable: "--font-figtree",
   weight: ["400", "500"],
 });
 
@@ -30,7 +24,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en" className={sans.variable}>
       <body className="font-sans antialiased">{children}</body>
     </html>
   );
