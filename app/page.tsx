@@ -97,7 +97,7 @@ export default function Home() {
             href="#buy"
             className="btn btn-ghost ml-auto border border-edge px-5 py-2.5 text-sm sm:ml-0"
           >
-            £1,180
+            Order — £1,180
           </a>
         </nav>
       </header>
@@ -121,7 +121,7 @@ export default function Home() {
               animationFrom={undefined}
               animationTo={undefined}
               onAnimationComplete={undefined}
-              className="mt-5 max-w-2xl font-display text-[3rem] font-light leading-[1.02] tracking-[-0.03em] sm:text-[4.4rem]"
+              className="blur-text mt-5 max-w-2xl font-display text-[3rem] font-light leading-[1.02] tracking-[-0.03em] sm:text-[4.4rem]"
             />
             <p className="mt-7 max-w-md leading-relaxed text-sumi/75">
               Solid walnut, two drivers, one amplifier, and a rear port cut by hand. There is no
@@ -244,6 +244,10 @@ export default function Home() {
             sizes="100vw"
             className="object-cover"
           />
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-linen from-25% via-linen/75 via-60% to-transparent to-92%"
+          />
         </div>
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-6xl px-6">
@@ -260,6 +264,13 @@ export default function Home() {
             >
               Order a pair — £1,180
             </a>
+            <p className="mt-5 text-xs text-ash">
+              Ora is invented and nothing is for sale.{" "}
+              <a href="https://github.com/new2codinglol/ora-audio" className="underline underline-offset-2">
+                Read the source
+              </a>
+              .
+            </p>
           </div>
         </div>
       </section>

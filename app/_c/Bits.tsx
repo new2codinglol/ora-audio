@@ -90,8 +90,8 @@ export function DetailViewer({ details }: { details: Detail[] }) {
                 onClick={() => setId(d.id)}
                 className="btn border px-4 py-2 text-xs uppercase tracking-[0.16em]"
                 style={{
-                  borderColor: on ? "var(--color-brass)" : "rgba(194,163,92,.28)",
-                  color: on ? "var(--color-bone)" : "var(--color-ash)",
+                  borderColor: on ? "var(--color-clay)" : "var(--color-edge)",
+                  color: on ? "var(--color-clay)" : "var(--color-ash)",
                 }}
               >
                 {d.tab}
@@ -107,8 +107,8 @@ export function DetailViewer({ details }: { details: Detail[] }) {
           transition={{ duration: 0.22, ease: EASE_OUT }}
         >
           <h3 className="mt-7 font-display text-3xl leading-tight sm:text-4xl">{active.title}</h3>
-          <p className="mt-4 max-w-md leading-relaxed text-bone/75">{active.body}</p>
-          <p className="mt-4 border-l border-brass/40 pl-4 text-sm leading-relaxed text-ash">
+          <p className="mt-4 max-w-md leading-relaxed text-sumi/75">{active.body}</p>
+          <p className="mt-4 border-l border-edge pl-4 text-sm leading-relaxed text-ash">
             {active.spec}
           </p>
         </motion.div>
