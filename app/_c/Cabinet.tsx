@@ -2,34 +2,54 @@
 
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useReducedMotion } from "motion/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import type { Group } from "three";
 
-/* The cabinet, in react-three-fiber. Japandi asks for natural materials and
-   craft rather than photography, and the honest problem with the stock shots
-   was always that they are somebody else's speaker. This one is Ora's: a
-   mitred walnut box with two recessed drivers and the hand-cut rear port,
-   turning slowly enough to read as an object on a table rather than a
-   showreel.
+/* The cabinet, in react-three-fiber. ORYZO's void-mode sections put a single
+   3D render in the middle of a full viewport with text flanking it, lit from
+   the upper right with a warm rim light — so this is the object that section
+   is built around, and the brief's own note that it "rotates from top-down to
+   3/4 angle between sections" is why the rotation is driven by scroll rather
+   than by a clock.
 
    Geometry only — no model file, no texture maps, no drei. Lambert surfaces
    and three lights do the work, which keeps the whole scene inside the
    three + fiber install rather than adding a loader and an asset pipeline. */
 
-const WALNUT = "#a67f56";
-const WALNUT_DARK = "#8d6942";
-const CONE = "#3a3531";
-const DUST = "#d8cfc0";
+const WALNUT = "#6b4c30";
+const WALNUT_DARK = "#4a341f";
+const CONE = "#241c16";
+const DUST = "#c9b79c";
 
-function Speaker() {
+function Speaker({ reduced }: { reduced: boolean | null }) {
   const group = useRef<Group>(null);
+  const target = useRef(0);
 
-  useFrame((state) => {
+  useEffect(() => {
+    const onScroll = () => {
+      // 0 at the top of the page, 1 by the time the object has passed
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      target.current = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useFrame(() => {
     if (!group.current) return;
-    const t = state.clock.elapsedTime;
-    // a slow settle, not a spin: ±16° so both the baffle and the mitre read
-    group.current.rotation.y = Math.sin(t * 0.18) * 0.28;
-    group.current.rotation.x = -0.06 + Math.sin(t * 0.12) * 0.03;
+    // top-down to three-quarter, mapped to scroll rather than to time, and
+    // eased toward the target so a flicked scroll does not snap the object
+    const t = target.current;
+    const yTo = -0.5 + t * 1.25;
+    const xTo = -0.62 + t * 0.62;
+    if (reduced) {
+      group.current.rotation.y = yTo;
+      group.current.rotation.x = xTo;
+      return;
+    }
+    group.current.rotation.y += (yTo - group.current.rotation.y) * 0.08;
+    group.current.rotation.x += (xTo - group.current.rotation.x) * 0.08;
   });
 
   return (
@@ -83,22 +103,17 @@ export function Cabinet() {
       <Canvas
         camera={{ position: [2.6, 1.1, 4.4], fov: 34 }}
         dpr={[1, 1.75]}
-        frameloop={reduced ? "demand" : "always"}
         gl={{ antialias: true, alpha: true }}
       >
-        {/* one warm key from upper left, a cool fill, and a rim to separate
-            the cabinet from a ground of nearly the same value */}
-        <ambientLight intensity={1.5} />
-        <directionalLight position={[-4, 5, 4]} intensity={2.1} color="#fff3e2" />
-        <directionalLight position={[5, 1, 2]} intensity={0.5} color="#cfd8e6" />
-        <directionalLight position={[0, -2, -4]} intensity={0.8} color="#ffffff" />
-        <Speaker />
-        {/* a soft contact shadow so the cabinet sits on the linen rather
-            than floating over it */}
-        <mesh position={[0, -1.75, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[1.3, 48]} />
-          <meshBasicMaterial color="#c9c0b1" transparent opacity={0.55} />
-        </mesh>
+        {/* Chiaroscuro, not product-shot lighting: one warm key from the
+            upper right and almost nothing else, so the far faces fall to the
+            walnut canvas rather than staying lit. A high ambient was making
+            solid timber read as orange plastic. */}
+        <ambientLight intensity={0.16} />
+        <directionalLight position={[5, 4.5, 3]} intensity={1.7} color="#ffcf9a" />
+        <directionalLight position={[-5, 0.5, 1.5]} intensity={0.16} color="#6d5f4f" />
+        <directionalLight position={[1, -1.5, -4]} intensity={0.28} color="#ffedd7" />
+        <Speaker reduced={reduced} />
       </Canvas>
     </div>
   );

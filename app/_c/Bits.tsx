@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const EASE_OUT = [0.23, 1, 0.32, 1] as const;
 
@@ -18,16 +18,16 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-90px" });
+  const inView = useInView(ref, { once: true, margin: "-80px" });
   const reduced = useReducedMotion();
 
   return (
     <motion.div
       ref={ref}
       className={className}
-      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
+      initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.5, ease: EASE_OUT, delay }}
+      transition={{ duration: 0.62, ease: EASE_OUT, delay }}
     >
       {children}
     </motion.div>
@@ -35,9 +35,55 @@ export function Reveal({
 }
 
 /* --------------------------------------------------------------------- */
-/* Detail viewer. The crossfade carries a 3px blur on the way through:     */
-/* without it you see two photographs overlapping rather than one view     */
-/* becoming another.                                                       */
+/* Fixed nav, four items, transparent. The active item takes a dashed       */
+/* underline rather than a colour, because the accent is editorial only.    */
+
+export function Nav({ items }: { items: [string, string][] }) {
+  const [active, setActive] = useState(items[0][1]);
+
+  useEffect(() => {
+    const targets = items
+      .map(([, href]) => document.querySelector(href))
+      .filter((el): el is Element => Boolean(el));
+    if (!targets.length) return;
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (hit) setActive(`#${hit.target.id}`);
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] }
+    );
+    targets.forEach((t) => io.observe(t));
+    return () => io.disconnect();
+  }, [items]);
+
+  return (
+    <nav className="fixed inset-x-0 top-0 z-50 flex items-start justify-between px-6 py-6">
+      <a href="#top" className="lab capt">
+        Ora
+      </a>
+      <ul className="flex gap-6">
+        {items.map(([label, href]) => (
+          <li key={href}>
+            <a href={href} className={`lab capt pb-1 ${active === href ? "nav-on" : ""}`}>
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+/* --------------------------------------------------------------------- */
+/* The detail viewer — Ora's one working artefact. Kept, and moved into the */
+/* ORYZO vocabulary: ghost buttons that invert when selected, full-bleed    */
+/* sharp-edged photography, and the description in the 29px mixed-case      */
+/* voice. The crossfade carries a 3px blur; without it you see two          */
+/* photographs overlapping rather than one view becoming another.           */
 
 export type Detail = {
   id: string;
@@ -54,8 +100,8 @@ export function DetailViewer({ details }: { details: Detail[] }) {
   const active = details.find((d) => d.id === id) ?? details[0];
 
   return (
-    <div className="grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
-      <div className="vignette relative aspect-[4/3] overflow-hidden">
+    <div className="grid gap-[18px] lg:grid-cols-[1fr_1fr] lg:items-center">
+      <div className="relative aspect-[4/3] w-full overflow-hidden">
         {details.map((d) => {
           const on = d.id === active.id;
           return (
@@ -65,7 +111,7 @@ export function DetailViewer({ details }: { details: Detail[] }) {
               alt={on ? d.alt : ""}
               aria-hidden={!on}
               fill
-              sizes="(min-width: 1024px) 55vw, 100vw"
+              sizes="(min-width: 1024px) 50vw, 100vw"
               className="object-cover transition-[opacity,filter,transform] duration-[320ms]"
               style={{
                 opacity: on ? 1 : 0,
@@ -79,7 +125,7 @@ export function DetailViewer({ details }: { details: Detail[] }) {
       </div>
 
       <div>
-        <div role="tablist" aria-label="Details" className="flex flex-wrap gap-2">
+        <div role="tablist" aria-label="Details" className="flex flex-wrap gap-[10px]">
           {details.map((d) => {
             const on = d.id === active.id;
             return (
@@ -88,11 +134,9 @@ export function DetailViewer({ details }: { details: Detail[] }) {
                 role="tab"
                 aria-selected={on}
                 onClick={() => setId(d.id)}
-                className="btn border px-4 py-2 text-xs uppercase tracking-[0.16em]"
-                style={{
-                  borderColor: on ? "var(--color-clay)" : "var(--color-edge)",
-                  color: on ? "var(--color-clay)" : "var(--color-ash)",
-                }}
+                className={`btn-ghost r-ghost lab capt ${
+                  on ? "bg-cream text-walnut" : ""
+                }`}
               >
                 {d.tab}
               </button>
@@ -106,9 +150,9 @@ export function DetailViewer({ details }: { details: Detail[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.22, ease: EASE_OUT }}
         >
-          <h3 className="mt-7 font-display text-3xl leading-tight sm:text-4xl">{active.title}</h3>
-          <p className="mt-4 max-w-md leading-relaxed text-sumi/75">{active.body}</p>
-          <p className="mt-4 border-l border-edge pl-4 text-sm leading-relaxed text-ash">
+          <h3 className="lab headline mt-[41px]">{active.title}</h3>
+          <p className="body-voice mt-[24px] max-w-[24ch]">{active.body}</p>
+          <p className="lab capt divider mt-[24px] max-w-[46ch] pt-[14px] text-driftwood">
             {active.spec}
           </p>
         </motion.div>
